@@ -1,5 +1,6 @@
 #pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, dgtl1,  startButton,    sensorTouch)
+#pragma config(Sensor, dgtl11, sonar1,         sensorSONAR_inch)
 #pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Motor,  port1,           motor1,        tmotorVex393_HBridge, openLoop)
 #pragma config(Motor,  port2,           motor2,        tmotorVex393_MC29, openLoop, reversed)
@@ -16,13 +17,14 @@ bool buttonStop = false;
 //untilBump(startButton, 0);
  if (SensorValue(startButton) == 1 && buttonStop == false)
 {
-startMotor(motor1, 0);
-startMotor(motor2, 0);
+resetMotorEncoder(emotor1);
+startMotor(motor1, 80);
+startMotor(motor2, 80);
 
 
-while(getMotorEncoder(emotor1) < 1400)
+while(getMotorEncoder(emotor1) < 1700)
 {
-startMotor(emotor1, 50);
+startMotor(emotor1, 127);
 }
 stopMotor(emotor1);
 
