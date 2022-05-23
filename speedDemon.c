@@ -9,39 +9,61 @@
 
 task main()
 {
+resetMotorEncoder(emotor1);
 getMotorEncoder(emotor1);
+int sonarCheck = 0;
+bool turn1Done = false;
+
 
 bool buttonStop = false;
   while(1==1)
 {
-//untilBump(startButton, 0);
- if (SensorValue(startButton) == 1 && buttonStop == false)
-{
-resetMotorEncoder(emotor1);
-startMotor(motor1, 80);
-startMotor(motor2, 80);
+	//start the robot forward upon the button press
+	 if (SensorValue(startButton) == 1 && buttonStop == false)
+	{
+		resetMotorEncoder(emotor1);
+		startMotor(motor1, 40);
+		startMotor(motor2, 40);
+	}
 
+		if (SensorValue(sonar1) <= 50 && SensorValue(sonar1) >= 5)
+		{
 
-while(getMotorEncoder(emotor1) < 1700)
-{
-startMotor(emotor1, 127);
-}
-stopMotor(emotor1);
+			sonarCheck++;
+			waitInMilliseconds(20);
 
+			if (sonarCheck >= 35)
+			{
+						//stop encoder motor when 1960 rotations occur
+				while(getMotorEncoder(emotor1) <= 450 && turn1Done == false)
+					{
+						startMotor(emotor1, 95);
+						sonarCheck = 0;
+					}
 
-buttonStop = true;
-wait(1);
-}
+					stopMotor(emotor1);
+					turn1Done = true;
+			}
+		}
+		resetMotorEncoder(emotor1);
+		//2nd turn
+if (SensorValue(sonar1) <= 15 && SensorValue(sonar1) >= 1)
+		{
 
-if (SensorValue(startButton) == 1 && buttonStop == true)
-{
-wait(1);
-stopMotor(motor1);
-stopMotor(motor2);
-stopMotor(emotor1);
+			sonarCheck++;
+			waitInMilliseconds(20);
 
-buttonStop = false;
-}
-}
+			if (sonarCheck >= 35)
+			{
+						//stop encoder motor
+				while(getMotorEncoder(emotor1) <= -450)
+					{
+						startMotor(emotor1, -95);
+						sonarCheck = 0;
+					}
 
+					stopMotor(emotor1);
+				}
+			}
+	}
 }
